@@ -265,17 +265,15 @@ jobs:
       - restore_cache:
           keys: [backend-build]      
       - run:
-         name: Install Ansible
-         command: |
-           sudo apt update
-           sudo apt install software-properties-common
-           sudo add-apt-repository --yes --update ppa:ansible/ansible
-           sudo apt install ansible         
-      - run:
          name: Install AWS CLI
          command: |
            sudo apt update -y
-           sudo apt install awscli -y     
+           sudo apt install awscli -y             
+      - run:
+         name: Install Ansible
+         command: |
+           sudo apt update -y
+           sudo apt install ansible -y           
       - run:
           name: Deploy backend
           command: |
