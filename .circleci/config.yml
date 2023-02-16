@@ -12,6 +12,7 @@ commands:
           when: on_fail
           command: |
             echo "Deleting udapeople stacks"
+            aws s3 rb s3://udapeople-<<parameters.workflow_id>> --force
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
 
@@ -266,8 +267,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt update -y
-            sudo apt install awscli -y    
+            pip install --upgrade pip
+            python3 -m pip install --user ansible
+            pip install awscli
       - run:
           name: Deploy backend
           command: |
