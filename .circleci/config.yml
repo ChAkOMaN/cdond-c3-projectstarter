@@ -311,7 +311,7 @@ jobs:
             echo "BACKEND_IP=${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            sleep 30s
+            sleep 30
             if curl "${API_URL}/api/status" | grep "ok"
             then
                 echo "Smoke BackEnd Test Successfully"
@@ -332,8 +332,8 @@ jobs:
             else
               exit 1
             fi
-      - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      #- destroy-environment:
+      #    workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
 
   cloudfront-update:
     docker:
