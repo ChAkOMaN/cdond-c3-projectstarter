@@ -254,20 +254,35 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: 3.11-alpine3.17
+      - image: cimg/node:13.8.0
     steps:
       - checkout
-      # Add ssh keys with fingerprint
-      # attach workspace
+      - add_ssh_keys:
+          fingerprints: [5b:5f:ad:9d:9a:a6:76:ff:bd:20:94:48:49:06:19:e8]
+      - attach_workspace:
+          at: ~/          
+      - restore_cache:
+          keys: [backend-build]      
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            sudo apt update -y
+            sudo apt install awscli -y    
       - run:
           name: Deploy backend
           command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure  
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
 
   smoke-test:
     docker:
@@ -351,8 +366,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
