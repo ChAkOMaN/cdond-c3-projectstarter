@@ -168,7 +168,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.8
     steps:
       - checkout
       - add_ssh_keys:
@@ -218,7 +218,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: cimg/python:3.9-node
+      - image: cimg/python:3.8-node
     steps:
       - checkout
       - run:
@@ -244,7 +244,8 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit fix
+            #npm audit fix
+            npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment:
