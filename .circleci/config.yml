@@ -218,7 +218,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: cimg/python:3.8-node
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - restore_cache:
