@@ -222,10 +222,11 @@ jobs:
     steps:
       - checkout
       - run:
-         name: Install AWS CLI
+         name: Install Dependencies
          command: |
            sudo apt update -y
-           sudo apt install awscli -y            
+           sudo apt install awscli -y
+           apk add --update --no-cache tar gzip            
       - run:
           name: Get backend url
           command: |
