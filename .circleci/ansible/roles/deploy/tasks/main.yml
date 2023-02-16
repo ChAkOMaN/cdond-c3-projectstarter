@@ -2,7 +2,7 @@
 - name: Creates directory
   become: true
   file:
-    path: /home/ubuntu/backend
+    path: ~/backend
     state: directory
 
 - name: Extract backend files to EC2
