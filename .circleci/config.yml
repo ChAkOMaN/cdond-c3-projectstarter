@@ -225,7 +225,14 @@ jobs:
       - restore_cache:
           keys: [frontend-build]      
       - run:
-         name: Install Dependencies
+         name: Install Ansible
+         command: |
+           sudo apt update
+           sudo apt install software-properties-common
+           sudo add-apt-repository --yes --update ppa:ansible/ansible
+           sudo apt install ansible         
+      - run:
+         name: Install AWS CLI
          command: |
            sudo apt update -y
            sudo apt install awscli -y      
@@ -267,9 +274,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pip install --upgrade pip
-            python3 -m pip install --user ansible
-            pip install awscli
+            sudo apt update -y
+            sudo apt install awscli -y    
       - run:
           name: Deploy backend
           command: |
