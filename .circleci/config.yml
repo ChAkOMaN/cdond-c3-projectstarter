@@ -225,8 +225,7 @@ jobs:
          name: Install Dependencies
          command: |
            sudo apt update -y
-           sudo apt install awscli -y
-           apk add --update --no-cache tar gzip            
+           sudo apt install awscli -y      
       - run:
           name: Get backend url
           command: |
@@ -236,8 +235,7 @@ jobs:
             --output text)
             echo "${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL = ${API_URL}" 
-            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            echo "API_URL = ${API_URL}" >> frontend/.env
             cat frontend/.env            
       - run:
           name: Deploy frontend objects
