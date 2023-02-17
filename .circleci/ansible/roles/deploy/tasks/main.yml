@@ -1,18 +1,13 @@
 ---
-- name: Creates directory
-  become: true
-  file:
-    path: ~/backend
-    state: directory
+- name: Create directory
+  shell: mkdir ~/backend
 
 - name: Extract backend files to EC2
-  become: true
   unarchive:
     src: ~/project/artifact.tar.gz
     dest: ~/backend
 
 - name: Executing node
-  become: true
   shell: |
     cd ~/backend
     pm2 stop default
