@@ -253,7 +253,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: python:3.8-alpine
     steps:
       - checkout
       - add_ssh_keys:
@@ -263,15 +263,9 @@ jobs:
       - restore_cache:
           keys: [backend-build]      
       - run:
-         name: Install AWS CLI
-         command: |
-           sudo apt update -y
-           sudo apt install awscli -y             
-      - run:
-         name: Install Ansible
-         command: |
-           sudo apt update -y
-           sudo apt install ansible -y           
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible        
       - run:
           name: Deploy backend
           command: |
@@ -283,6 +277,7 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             echo "RUTA:"
             pwd
+            ls -d $PWD/*
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
