@@ -275,9 +275,6 @@ jobs:
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
-            echo "RUTA:"
-            pwd
-            ls -d $PWD/*
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
@@ -322,13 +319,14 @@ jobs:
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
-                # Change this to 0 after the job fails
-              exit 1
+                echo "Smoke FrontEnd Test Successfully"
+                exit 0
             else
-              exit 1
+                echo "Smoke FrontEnd Test Failed"
+                exit 1
             fi
-      #- destroy-environment:
-      #    workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
 
   cloudfront-update:
     docker:
