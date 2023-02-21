@@ -7,10 +7,6 @@
     src: ~/project/artifact.tar.gz
     dest: ~/backend
 
-- name: Showing local env vars
-  shell: |
-    cat ~/.env
-
 - name: Copying env vars
   copy:
     src: "~/.env"
