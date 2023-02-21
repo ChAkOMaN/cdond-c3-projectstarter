@@ -193,6 +193,8 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]      
       - run:
          name: Install dependencies
          command: |
@@ -204,7 +206,8 @@ jobs:
             cd backend
             npm install
             # Run and save the migration output
-            npm audit fix > migrations_dump.txt
+            npm run migrations > migrations_dump.txt
+            #npm audit fix > migrations_dump.txt
       - run:
           name: Send migration results to kvdb
           command: |
@@ -214,6 +217,8 @@ jobs:
             fi 
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}             
 
   deploy-frontend:
     docker:
@@ -248,10 +253,12 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}             
                     
   deploy-backend:
     docker:
-      - image: python:3.8-alpine
+      - image: cimg/node:13.8.0  #python:3.8-alpine
     steps:
       - checkout
       - add_ssh_keys:
@@ -263,7 +270,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible        
+            apk add --update --no-cache tar gzip aws-cli ansible        
       - run:
           name: Setting backend envs
           command: |
@@ -291,6 +298,8 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}             
 
   smoke-test:
     docker:
