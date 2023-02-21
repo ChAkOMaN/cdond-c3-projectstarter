@@ -17,15 +17,15 @@
       wait_for_connection:
         timeout: 600
 
-    - name: "install python for Ansible."
-      become: yes
-      register: aptinstall
-      apt:
-        name: 
-          - python3
-        update_cache: yes
+    # - name: "install python for Ansible."
+    #   become: yes
+    #   register: aptinstall
+    #   apt:
+    #     name: 
+    #       - python3
+    #     update_cache: yes
 
-    - name: Loading environment variables
+    - name: "Loading environment variables"
       tags: always
       set_fact:        
         - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
