@@ -351,7 +351,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/OldWorkflowID.txt            
+            - OldWorkflowID.txt            
       - run:
           name: Update cloudfront distribution
           command: |
@@ -370,12 +370,14 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/            
       - run:
           name: Get old stack workflow id and remove stacks
           command: |
             # Fetch the Old workflow ID
             pwd
-            export OldWorkflowID=$(cat project/OldWorkflowID.txt)
+            export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID: "${CIRCLE_WORKFLOW_ID:0:7}"
             # Fetch the stack names          
