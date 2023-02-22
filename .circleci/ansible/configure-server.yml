@@ -28,6 +28,8 @@
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
+    - TYPEORM_CONNECTION: "{{ lookup('env', 'ENVIRONMENT')}}"
+    - TYPEORM_ENTITIES: "{{ lookup('env', 'NODE_ENV')}}"  
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
     - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
@@ -38,19 +40,19 @@
     - TYPEORM_MIGRATIONS: "{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
     - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
 
-  tasks:
-    - name: Persist environment variables
-      become: yes
-      shell: |
-        echo TYPEORM_CONNECTION=\"$TYPEORM_CONNECTION\" >> /etc/environment
-        echo TYPEORM_ENTITIES=\"$TYPEORM_ENTITIES\" >> /etc/environment
-        echo TYPEORM_HOST=\"$TYPEORM_HOST\" >> /etc/environment
-        echo TYPEORM_PORT=\"$TYPEORM_PORT\" >> /etc/environment
-        echo TYPEORM_USERNAME=\"$TYPEORM_USERNAME\" >> /etc/environment
-        echo TYPEORM_PASSWORD=\"$TYPEORM_PASSWORD\" >> /etc/environment
-        echo TYPEORM_DATABASE=\"$TYPEORM_DATABASE\" >> /etc/environment
-        echo TYPEORM_MIGRATIONS=\"$TYPEORM_MIGRATIONS\" >> /etc/environment
-        echo TYPEORM_MIGRATIONS_DIR=\"$TYPEORM_MIGRATIONS_DIR\" >> /etc/environment    
+  # tasks:
+  #   - name: Persist environment variables
+  #     become: yes
+  #     shell: |
+  #       echo TYPEORM_CONNECTION=\"$TYPEORM_CONNECTION\" >> /etc/environment
+  #       echo TYPEORM_ENTITIES=\"$TYPEORM_ENTITIES\" >> /etc/environment
+  #       echo TYPEORM_HOST=\"$TYPEORM_HOST\" >> /etc/environment
+  #       echo TYPEORM_PORT=\"$TYPEORM_PORT\" >> /etc/environment
+  #       echo TYPEORM_USERNAME=\"$TYPEORM_USERNAME\" >> /etc/environment
+  #       echo TYPEORM_PASSWORD=\"$TYPEORM_PASSWORD\" >> /etc/environment
+  #       echo TYPEORM_DATABASE=\"$TYPEORM_DATABASE\" >> /etc/environment
+  #       echo TYPEORM_MIGRATIONS=\"$TYPEORM_MIGRATIONS\" >> /etc/environment
+  #       echo TYPEORM_MIGRATIONS_DIR=\"$TYPEORM_MIGRATIONS_DIR\" >> /etc/environment    
 
   roles:
     - configure-server
