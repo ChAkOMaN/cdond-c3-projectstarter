@@ -1,0 +1,5 @@
+#Public Url to GitHub repository
+https://github.com/ChAkOMaN/cdond-c3-projectstarter
+
+#Public URL for your S3 Bucket 
+https://s3.console.aws.amazon.com/s3/buckets/udapeople-a7d2f34?region=us-east-1&tab=objects
